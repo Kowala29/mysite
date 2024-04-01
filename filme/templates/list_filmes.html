@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content%}
+    <a href="{% url 'filme:new_filmes' %}">NOVO</a>
+    <table>
+        <thead>
+            <tr>
+                <td>Filme</td>
+                <td>Genero</td>
+                <td>Quantidade</td>
+                <td>Preço</td>
+            </tr>
+        </thead>
+        <tbody>
+        {% for filme in filmes %}
+        <tr>
+            <td>{{ filme.filme }}</td>
+            <td>{{ filme.genero }}</td>
+            <td>{{ filme.quantidade }}</td>
+            <td>{{ filme.preco }}</td>
+            <td>Update</td>
+            <td>Delete</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a href="{% url 'index' %}">Voltar</a>
+
+{% endblock %}
