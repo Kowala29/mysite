@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 
-{% block content%}
-    <a href="{% url 'filme:new_filmes' %}">NOVO</a>
+{% block content %}
+    <a href="{% url 'filme:new_filmes' %}">Novo</a>
+    
     <table>
         <thead>
             <tr>
                 <td>Filme</td>
-                <td>Genero</td>
+                <td>Gênero</td>
                 <td>Quantidade</td>
                 <td>Preço</td>
             </tr>
@@ -18,8 +19,8 @@
             <td>{{ filme.genero }}</td>
             <td>{{ filme.quantidade }}</td>
             <td>{{ filme.preco }}</td>
-            <td>Update</td>
-            <td>Delete</td>
+            <td><a href="{% url 'filme:update_filmes' filme.id %}">Update</a></td>
+            <td><a href="{% url 'filme:delete_filmes' filme.id %}">Delete</a></td>
         </tr>
         {% endfor %}
         </tbody>
@@ -28,3 +29,4 @@
     <a href="{% url 'index' %}">Voltar</a>
 
 {% endblock %}
+

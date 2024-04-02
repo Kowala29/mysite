@@ -1,24 +1,47 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Filmes
-from django.db import models
-from django.http import HttpResponse
+from .forms import Filmes_Form
 
 def list_filmes(request):
     filmes = Filmes.objects.all()
-    template_name = "list_filmes.html"
+    template_name = 'list_filmes.html'
     context = {
-        "filmes" : filmes
+        'filmes': filmes
     }
-    
     return render(request, template_name, context)
 
 def new_filmes(request):
-    new_filme = [Filmes.filme, Filmes.genero, Filmes.quantidade, Filmes.preco]
+    print(request.method)
+    if request.method == "POST":
+        form = Filmes_Form(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("filme:list_filmes")
+    else:
+        template_name = "new_filmes.html"
+        context = {
+            "form" : Filmes_Form()
+        }
+        return render(request, template_name, context)
     
-    return HttpResponse("nome %s" % new_filme)
 
-def update_filmes(request):
-    pass
+def update_filmes(request, pk):
+    filme = Filmes.objects.get(id = pk)
+    if request.method == "POST":
+        form = Filmes_Form(request.POST, instance = filme)
+        if form.is_valid():
+            form.save()
+            return redirect("filme:list_filmes")
+    else:
+        template_name = "update_filmes.html"
+        context = {
+            "form" : Filmes_Form(instance = filme),
+            "pk" : pk
+        }
+        return render(request, template_name, context)
 
-def delete_filmes(request):
-    pass
+def delete_filmes(request, pk):
+    filme = Filmes.objects.get(id = pk)
+    filme.delete()
+    return redirect("filme:list_filmes")
+    
