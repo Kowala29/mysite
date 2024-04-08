@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Filmes
-from .forms import Filmes_Form
+from .forms import Filmes_Form, Generos_Form
 
 def list_filmes(request):
     filmes = Filmes.objects.all()
@@ -45,3 +45,16 @@ def delete_filmes(request, pk):
     filme.delete()
     return redirect("filme:list_filmes")
     
+
+def new_genero(request):
+    if request.method == "POST":
+        form = Generos_Form(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("filme:new_filmes")
+    else:
+        template_name = "new_genero.html"
+        context = {
+            "form" : Generos_Form()
+        }
+        return render(request, template_name, context)
